@@ -128,7 +128,7 @@ function init() {
     }
     savedGameModeEvent = e;
     sceneSwap(e, intro, content, introOutDuration, contentInDuration);
-    let urlRandomWord = "https://random-word-api.herokuapp.com/word?number=1";
+    const urlRandomWord = null;
     let color;
     switch (e.target.name) {
       case "noun":
@@ -308,9 +308,20 @@ function init() {
   function getRandomWord(urlRandomWord) {
     if (partOfSpeech === "animal") {
       dictionarySearchFor(animals[Math.floor(Math.random() * animals.length)], urlRandomWord);
-    } else {
-      fetchGET(urlRandomWord, data => dictionarySearchFor(data[0], urlRandomWord));
+      return;
     }
+    const letters = "abcdefghijklmnopqrstuvwxyz";
+    const pick = () => letters[Math.floor(Math.random() * letters.length)];
+    const url = `https://api.datamuse.com/words?sp=${pick()}${pick()}*&md=p&max=1000`;
+    fetchGET(url, data => {
+      const tag = partOfSpeech === "adjective" ? "adj" : partOfSpeech === "noun" ? "n" : null;
+      const candidates = data.filter(w => /^[a-z]{3,}$/.test(w.word) && (!tag || (w.tags || []).includes(tag)));
+      if (!candidates.length) {
+        getRandomWord(urlRandomWord);
+        return;
+      }
+      dictionarySearchFor(candidates[Math.floor(Math.random() * candidates.length)].word, urlRandomWord);
+    });
   }
   function dictionarySearchFor(word, urlRandomWord) {
     const urlDictionary = "https://api.dictionaryapi.dev/api/v2/entries/en/";

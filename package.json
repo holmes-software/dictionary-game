@@ -7,19 +7,19 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "serve": "http-server -p 3000 -c-1",
     "reset-sw": "workbox generateSW workbox-config.js",
-    "build-android": "cd android && bubblewrap init --manifest=https://dictionary-game.jpholmes.com/manifest.json && bubblewrap build",
+    "build-android": "cd android && bubblewrap init --manifest=https://dictionary-game.holmes-software.com/manifest.json && bubblewrap build",
     "gen-fp": "keytool -list -v -keystore android/android.keystore"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/joshua-holmes/dictionary-game.git"
+    "url": "git+https://github.com/holmes-software/dictionary-game.git"
   },
   "author": "Joshua Holmes",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/joshua-holmes/dictionary-game/issues"
+    "url": "https://github.com/holmes-software/dictionary-game/issues"
   },
-  "homepage": "https://github.com/joshua-holmes/dictionary-game#readme",
+  "homepage": "https://github.com/holmes-software/dictionary-game#readme",
   "dependencies": {
     "http-server": "^14.1.1",
     "workbox-cli": "^6.5.3"

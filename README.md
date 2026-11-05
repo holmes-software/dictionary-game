@@ -1,13 +1,9 @@
 # Dictionary Game
 
-[Dictionary Game is now available on the Google Play Store!](https://play.google.com/store/apps/details?id=com.jpholmes.dictionary_game.twa)
-
 Welcome to the Dictionary Game app! Based on the classic game of hangman, you must use the available letters to guess a hidden word. In Dictionary Game, a random word is selected from the dictionary, and you must use the dictionary definition to help you guess the word!
 
 ## Demo
-View live demo: [dictionary-game.jpholmes.com](https://dictionary-game.jpholmes.com/).
-
-View on Google Play Store: [play.google.com/store/apps/details?id=com.jpholmes.dictionary_game.twa](https://play.google.com/store/apps/details?id=com.jpholmes.dictionary_game.twa)
+View live demo: [dictionary-game.holmes-software.com](https://dictionary-game.holmes-software.com/).
 
 ![Dictionary Game demo gif](./dictionary-game.gif)
 
@@ -24,7 +20,7 @@ Only do this if you know what you are doing by modifying the service worker conf
 
 ## Made by
 Joshua Holmes<br/>
-[jpholmes.com](https://www.jpholmes.com)<br/>
+[holmes-software.com](https://www.holmes-software.com)<br/>
 [linkedin.com/in/joshua-phillip-holmes](https://www.linkedin.com/in/joshua-phillip-holmes/)<br/>
 [github.com/joshua-holmes](https://github.com/joshua-holmes)<br/>
 [joshua.phillip.holmes@gmail.com](mailto:joshua.phillip.holmes@gmail.com)
