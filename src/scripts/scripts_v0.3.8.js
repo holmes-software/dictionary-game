@@ -284,7 +284,7 @@ function init() {
       btn.classList.add(color);
     })
   }
-  function fetchGET(url, cb) {
+  function fetchGET(url, cb, onFail) {
     const get = () => {
       fetch(url)
       .then(r => r.json())
@@ -295,6 +295,7 @@ function init() {
       .catch(error => {
         if (navigator.onLine) {
           console.error("HOLD THE PHONE!!! Fetch error -->", error);
+          setTimeout(onFail || get, 500);
         } else {
           showPopup(disconnectPopup);
         }
@@ -305,6 +306,10 @@ function init() {
   }
   const animals = ["aardvark","alligator","antelope","badger","bat","bear","beaver","bison","buffalo","camel","cat","cheetah","chicken","chimpanzee","cobra","cougar","cow","coyote","crab","crocodile","crow","deer","dolphin","donkey","dove","duck","eagle","eel","elephant","falcon","ferret","flamingo","fox","frog","gazelle","giraffe","goat","goose","gorilla","hamster","hawk","hedgehog","heron","hippopotamus","horse","hyena","iguana","jaguar","kangaroo","koala","lemur","leopard","lion","lizard","llama","lobster","lynx","meerkat","mongoose","monkey","moose","octopus","opossum","ostrich","otter","owl","panda","panther","parrot","peacock","pelican","penguin","pig","pigeon","porcupine","rabbit","raccoon","rat","raven","reindeer","rhinoceros","salmon","scorpion","seal","shark","sheep","skunk","sloth","snake","sparrow","spider","squirrel","swan","tiger","tortoise","toucan","turkey","turtle","vulture","walrus","weasel","whale","wolf","wombat","woodpecker","yak","zebra"];
   let partOfSpeech = null;
+  function wordFrequency(w) {
+    const f = (w.tags || []).find(t => t.startsWith("f:"));
+    return f ? parseFloat(f.slice(2)) : 0;
+  }
   function getRandomWord(urlRandomWord) {
     if (partOfSpeech === "animal") {
       dictionarySearchFor(animals[Math.floor(Math.random() * animals.length)], urlRandomWord);
@@ -312,16 +317,16 @@ function init() {
     }
     const letters = "abcdefghijklmnopqrstuvwxyz";
     const pick = () => letters[Math.floor(Math.random() * letters.length)];
-    const url = `https://api.datamuse.com/words?sp=${pick()}${pick()}*&md=p&max=1000`;
+    const url = `https://api.datamuse.com/words?sp=${pick()}${pick()}*&md=pf&max=1000`;
     fetchGET(url, data => {
       const tag = partOfSpeech === "adjective" ? "adj" : partOfSpeech === "noun" ? "n" : null;
-      const candidates = data.filter(w => /^[a-z]{3,}$/.test(w.word) && (!tag || (w.tags || []).includes(tag)));
+      const candidates = data.filter(w => /^[a-z]{3,}$/.test(w.word) && wordFrequency(w) >= 1 && (!tag || (w.tags || []).includes(tag)));
       if (!candidates.length) {
         getRandomWord(urlRandomWord);
         return;
       }
       dictionarySearchFor(candidates[Math.floor(Math.random() * candidates.length)].word, urlRandomWord);
-    });
+    }, () => getRandomWord(urlRandomWord));
   }
   function dictionarySearchFor(word, urlRandomWord) {
     const urlDictionary = "https://api.dictionaryapi.dev/api/v2/entries/en/";
@@ -336,7 +341,7 @@ function init() {
       } else {
         getRandomWord(urlRandomWord);
       }
-    });
+    }, () => getRandomWord(urlRandomWord));
   }
 
 }
