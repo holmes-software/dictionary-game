@@ -133,24 +133,24 @@ function init() {
     }
     savedGameModeEvent = e;
     sceneSwap(e, intro, content, introOutDuration, contentInDuration);
-    let urlRandomWord = "https://random-word-form.herokuapp.com/random/";
+    let urlRandomWord = "https://random-word-api.herokuapp.com/word?number=1";
     let color;
     switch (e.target.name) {
       case "noun":
         color = "green";
-        urlRandomWord += "noun";
+        partOfSpeech = "noun";
         break;
       case "adjective":
         color = "green";
-        urlRandomWord += "adjective";
+        partOfSpeech = "adjective";
         break;
       case "animal":
         color = "blue";
-        urlRandomWord += "animal";
+        partOfSpeech = "animal";
         break;
       case "everything":
         color = "red";
-        urlRandomWord = "https://random-word-api.herokuapp.com/word?number=1";
+        partOfSpeech = null;
         break;
       default:
         console.error("MAYDAY!! URL CAN'T BE FOUND! WE'RE GOING DOWN!! *crash*");
@@ -310,13 +310,20 @@ function init() {
     onReconnect = get;
     get();
   }
+  const animals = ["aardvark","alligator","antelope","badger","bat","bear","beaver","bison","buffalo","camel","cat","cheetah","chicken","chimpanzee","cobra","cougar","cow","coyote","crab","crocodile","crow","deer","dolphin","donkey","dove","duck","eagle","eel","elephant","falcon","ferret","flamingo","fox","frog","gazelle","giraffe","goat","goose","gorilla","hamster","hawk","hedgehog","heron","hippopotamus","horse","hyena","iguana","jaguar","kangaroo","koala","lemur","leopard","lion","lizard","llama","lobster","lynx","meerkat","mongoose","monkey","moose","octopus","opossum","ostrich","otter","owl","panda","panther","parrot","peacock","pelican","penguin","pig","pigeon","porcupine","rabbit","raccoon","rat","raven","reindeer","rhinoceros","salmon","scorpion","seal","shark","sheep","skunk","sloth","snake","sparrow","spider","squirrel","swan","tiger","tortoise","toucan","turkey","turtle","vulture","walrus","weasel","whale","wolf","wombat","woodpecker","yak","zebra"];
+  let partOfSpeech = null;
   function getRandomWord(urlRandomWord) {
-    fetchGET(urlRandomWord, data => dictionarySearchFor(data[0], urlRandomWord));
+    if (partOfSpeech === "animal") {
+      dictionarySearchFor(animals[Math.floor(Math.random() * animals.length)], urlRandomWord);
+    } else {
+      fetchGET(urlRandomWord, data => dictionarySearchFor(data[0], urlRandomWord));
+    }
   }
   function dictionarySearchFor(word, urlRandomWord) {
     const urlDictionary = "https://api.dictionaryapi.dev/api/v2/entries/en/";
     fetchGET(urlDictionary + word, data => {
-      const isSuccess = !!data[0];
+      const isSuccess = !!data[0] && (!partOfSpeech || partOfSpeech === "animal" ||
+        data[0].meanings.some(m => m.partOfSpeech === partOfSpeech));
       if (isSuccess) {
         wordObj = data[0];
         // wordObj.word = "for testing"; UNCOMMENT if you want to choose the word
