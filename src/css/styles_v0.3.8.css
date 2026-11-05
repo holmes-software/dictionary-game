@@ -163,26 +163,6 @@ button.small {
   margin: 5px;
   padding: 0;
 }
-img.bmc-icon {
-  height: 20px;
-  margin: auto;
-}
-
-#bmc-text {
-  text-align: center;
-  margin: auto 0;
-}
-
-button.bmc {
-  margin: 25px 5px;
-  width: 47px;
-  height: 47px;
-}
-
-.bmc-container {
-  margin: 12px 0;
-}
-
 .close-x {
   position: absolute;
   right: 0;

@@ -16,8 +16,6 @@ function init() {
   const gameBtns = content.querySelectorAll("#content button");
   const btnPlayAgain = content.querySelectorAll("button.play-again");
   const btnChangeMode = content.querySelectorAll("button.change-mode");
-  const btnBMC = content.querySelectorAll("button.bmc");
-  const bmcContainer = content.querySelector(".bmc-container");
   const closeX = content.querySelector("div.close-x")
   let savedGameModeEvent;
   let badPoints = 0;
@@ -82,9 +80,6 @@ function init() {
   letterBtns.forEach(btn => {
     btn.addEventListener("click", processInput);
   });
-  if (window.location.pathname === '/no-bmc') {
-    bmcContainer.style.display = 'none';
-  }
 
   function resetGame() {
     wordAnswerAsArray = [...wordObj.word.toUpperCase()];
@@ -286,9 +281,7 @@ function init() {
       for (let c of ['red', 'green', 'blue']) {
         btn.classList.remove(c);
       }
-      if (!btn.className.includes('bmc')) {
-        btn.classList.add(color);
-      }
+      btn.classList.add(color);
     })
   }
   function fetchGET(url, cb) {
@@ -335,11 +328,6 @@ function init() {
     });
   }
 
-  for (let btn of btnBMC) {
-    btn.addEventListener('click', () => {
-      window.open('https://www.buymeacoffee.com/joshuaholmes', '_newtab')
-    });
-  }
 }
 
 document.addEventListener("DOMContentLoaded", init)
